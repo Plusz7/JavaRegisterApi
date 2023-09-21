@@ -1,0 +1,18 @@
+components:
+  schemas:
+    TeacherDTO:
+      type: object
+      description: Data element for Teacher
+      required:
+        - email
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+        firstName:
+          type: string
+          minLength: 3
+        lastName:
+          type: string
