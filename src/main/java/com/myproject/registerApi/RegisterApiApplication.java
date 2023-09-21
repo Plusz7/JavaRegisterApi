@@ -1,13 +1,13 @@
-package com.myproject.register;
+package com.myproject.registerApi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RegisterApplication {
+public class RegisterApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RegisterApplication.class, args);
+		SpringApplication.run(RegisterApiApplication.class, args);
 	}
 
 }

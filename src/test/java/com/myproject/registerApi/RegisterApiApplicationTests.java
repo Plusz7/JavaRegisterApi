@@ -1,10 +1,10 @@
-package com.myproject.register;
+package com.myproject.registerApi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RegisterApplicationTests {
+class RegisterApiApplicationTests {
 
 	@Test
 	void contextLoads() {
