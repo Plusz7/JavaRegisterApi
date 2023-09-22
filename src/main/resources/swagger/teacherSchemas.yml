@@ -5,6 +5,8 @@ components:
       description: Data element for Teacher
       required:
         - email
+        - firstName
+        - lastName
       properties:
         id:
           type: string

@@ -1,0 +1,13 @@
+components:
+  schemas:
+    ActivityDTO:
+      type: object
+      description: Data element for Activity
+      required:
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string

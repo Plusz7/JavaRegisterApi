@@ -83,6 +83,76 @@ paths:
               schema:
                 $ref: 'childSchemas.yml#/components/schemas/ChildDTO'
 
+  /activity:
+    post:
+      summary: Save Activity
+      operationId: saveActivity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: 'activitySchemas.yml#/components/schemas/ActivityDTO'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: 'activitySchemas.yml#/components/schemas/ActivityDTO'
+  /activity/{id}:
+    get:
+      summary: Get Activity By Id
+      operationId: getActivityById
+      parameters:
+        - name: id
+          in: path
+          description: Unique Id of an Activity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: 'activitySchemas.yml#/components/schemas/ActivityDTO'
+  /parent:
+    post:
+      summary: Save Parent
+      operationId: saveParent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: 'parentSchemas.yml#/components/schemas/ParentDTO'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: 'parentSchemas.yml#/components/schemas/ParentDTO'
+  /parent/{id}:
+    get:
+      summary: Get Parent By Id
+      operationId: getParentById
+      parameters:
+        - name: id
+          in: path
+          description: Unique Id of an Parent
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: 'parentSchemas.yml#/components/schemas/ParentDTO'
 components:
   schemas:
     Error:
