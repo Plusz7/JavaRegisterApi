@@ -1,13 +1,13 @@
 components:
   schemas:
-    ChildDTO:
+    ParentDTO:
       type: object
-      description: Data element for Child
+      description: Data element for Parent
       required:
         - firstName
         - lastName
-        - age
-        - gender
+        - email
+        - phoneNumber
       properties:
         id:
           type: string
@@ -17,11 +17,11 @@ components:
           minLength: 3
         lastName:
           type: string
-        age:
-          type: integer
-        gender:
+        email:
           type: string
-        activities:
+        phoneNumber:
+          type: string
+        children:
           type: array
           items:
-            $ref: 'activitySchemas.yml#/components/schemas/ActivityDTO'
+            $ref: 'childSchemas.yml#/components/schemas/ChildDTO'
