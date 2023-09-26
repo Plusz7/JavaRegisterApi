@@ -57,12 +57,36 @@ paths:
             schema:
               $ref: 'childSchemas.yml#/components/schemas/ChildDTO'
       responses:
-        200:
-          description: OK
+        201:
+          description: Created
           content:
             application/json:
               schema:
                 $ref: 'childSchemas.yml#/components/schemas/ChildDTO'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A description of the validation error(s) or bad input data.
+                example:
+                  message: "Validation failed: Name must be at least 3 characters long."
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A description of the server error.
+                example:
+                  message: "Internal server error occurred."
   /child/{id}:
     get:
       summary: Get Child By Id
@@ -82,6 +106,30 @@ paths:
             application/json:
               schema:
                 $ref: 'childSchemas.yml#/components/schemas/ChildDTO'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A description of the resource not being found.
+                example:
+                  message: "Child not found."
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A description of the server error.
+                example:
+                  message: "Internal server error occurred."
 
   /activity:
     post:
@@ -93,12 +141,30 @@ paths:
             schema:
               $ref: 'activitySchemas.yml#/components/schemas/ActivityDTO'
       responses:
-        200:
-          description: OK
+        201:
+          description: Created
           content:
             application/json:
               schema:
                 $ref: 'activitySchemas.yml#/components/schemas/ActivityDTO'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     get:
       summary: Get All Activities
       operationId: getAllActivities
@@ -111,6 +177,24 @@ paths:
                 type: array
                 items:
                   $ref: 'activitySchemas.yml#/components/schemas/ActivityDTO'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /activity/{name}:
     get:
       summary: Get Activity By Name
@@ -129,6 +213,24 @@ paths:
             application/json:
               schema:
                 $ref: 'activitySchemas.yml#/components/schemas/ActivityDTO'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     patch:
       summary: Updates name of activity
       operationId: updateActivityByName
@@ -148,6 +250,24 @@ paths:
       responses:
         200:
           description: OK
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
     delete:
       summary: Deletes activity by name
@@ -162,6 +282,24 @@ paths:
       responses:
         201:
           description: OK
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /parent:
     post:
       summary: Save Parent
