@@ -19,20 +19,23 @@ public class ActivityController implements ActivityApi {
 
     @Override
     public ResponseEntity<ActivityDTO> saveActivity(ActivityDTO activityDTO) {
-        ActivityDTO activity = activityService.saveActivity(activityDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(activity);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(activityService.saveActivity(activityDTO));
     }
 
     @Override
     public ResponseEntity<ActivityDTO> getActivityByName(String name) {
-        ActivityDTO activity = activityService.getActivity(name);
-        return ResponseEntity.ok().body(activity);
+        return ResponseEntity
+                .ok()
+                .body(activityService.getActivity(name));
     }
 
     @Override
     public ResponseEntity<List<ActivityDTO>> getAllActivities() {
-        List<ActivityDTO> activities = activityService.getAllActivities();
-        return ResponseEntity.ok().body(activities);
+        return ResponseEntity
+                .ok()
+                .body(activityService.getAllActivities());
     }
 
     @Override
