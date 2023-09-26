@@ -20,5 +20,5 @@ public interface ActivityRepository extends JpaRepository<ActivityDb, UUID> {
     @Transactional
     @Query("UPDATE ActivityDb a SET a.name = :name WHERE a.id = :id")
     int updateActivityByName(@Param("name") String name, @Param("id") UUID id);
-    void deleteByName(String name);
+    int deleteByName(String name);
 }

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ActivityService {
+public class ActivityService extends AbstractService {
 
     private final ActivityRepository activityRepository;
 
@@ -24,11 +24,16 @@ public class ActivityService {
 
         ActivityDb activityDb = new ActivityDb(activityDTO.getName());
         try {
+
+            LOGGER.info("Saving activity: " + activityDb.getName());
+
             activityDb = activityRepository.save(activityDb);
-        } catch (Exception e) {
-            throw new AlreadyExistsException(
-                    "Activity name already exists: " + activityDTO.getName() + "\n \n" + e.getMessage()
-            ); // the message is for me, information provided from message are to exposed
+
+            LOGGER.info("Activity saved: " + activityDb.getName());
+
+        } catch (RuntimeException e) {
+            LOGGER.error(e.getMessage());
+            throw new AlreadyExistsException(activityDTO.getName());
         }
 
         return new ActivityDTO()
@@ -39,9 +44,12 @@ public class ActivityService {
 
     public ActivityDTO getActivity(String name) {
 
+        LOGGER.info("Getting activity: " + name);
         Optional<ActivityDb> optionalActivityDb = activityRepository.getByName(name);
         optionalActivityDb.orElseThrow(() -> new NotFoundException("Activity not found: " + name));
+
         ActivityDb activityDb = optionalActivityDb.get();
+        LOGGER.info("Activity found: " + activityDb.getName());
 
         return new ActivityDTO()
                 .id(activityDb.getId())
@@ -50,6 +58,7 @@ public class ActivityService {
     }
 
     public List<ActivityDTO> getAllActivities() {
+        LOGGER.info("Getting all activities");
         return activityRepository.findAll().stream()
                 .map(activityDb -> new ActivityDTO()
                         .id(activityDb.getId())
@@ -60,15 +69,27 @@ public class ActivityService {
 
     public void updateActivity(String oldName, String newName) {
 
-        ActivityDTO activityDTOToUpdate = getActivity(oldName);
-        int isSuccess = activityRepository.updateActivityByName(newName, activityDTOToUpdate.getId());
-        if (isSuccess == 0) {
-            throw new NotFoundException("Activity not found: " + oldName);
+        LOGGER.info("Validating names for activity.");
+
+        if (newName.equals(oldName)) {
+            throw new AlreadyExistsException(newName);
         }
+        LOGGER.info("Validation successful.");
+        LOGGER.info("Updating activity: " + oldName + " -> " + newName);
+
+        ActivityDTO activityToUpdate = getActivity(oldName);
+        isSuccess(
+                activityRepository.updateActivityByName(activityToUpdate.getName(), activityToUpdate.getId()),
+                newName
+        );
     }
 
     public void deleteActivity(String name) {
-        activityRepository.deleteByName(name);
+        LOGGER.info("Deleting activity: " + name);
+        isSuccess(
+                activityRepository.deleteByName(name),
+                name
+        );
+        LOGGER.info("Activity deleted: " + name);
     }
-
 }

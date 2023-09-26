@@ -2,6 +2,7 @@ package com.myproject.registerApi.controller;
 
 import com.myproject.registerApi.model.ActivityDTO;
 import com.myproject.registerApi.service.ActivityService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,7 +11,6 @@ import java.util.List;
 @RestController
 public class ActivityController implements ActivityApi {
 
-    //TODO fix responses codes
     private  final ActivityService activityService;
 
     public ActivityController(ActivityService activityService) {
@@ -20,7 +20,7 @@ public class ActivityController implements ActivityApi {
     @Override
     public ResponseEntity<ActivityDTO> saveActivity(ActivityDTO activityDTO) {
         ActivityDTO activity = activityService.saveActivity(activityDTO);
-        return ResponseEntity.ok().body(activity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(activity);
     }
 
     @Override
