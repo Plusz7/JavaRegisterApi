@@ -16,9 +16,9 @@ import java.util.UUID;
 public interface ActivityRepository extends JpaRepository<ActivityDb, UUID> {
 
     Optional<ActivityDb> getByName(String name);
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Transactional
     @Query("UPDATE ActivityDb a SET a.name = :name WHERE a.id = :id")
-    int updateActivityByName(@Param("name") String name, @Param("id") UUID id);
+    int updateActivityName(@Param("name") String name, @Param("id") UUID id);
     int deleteByName(String name);
 }

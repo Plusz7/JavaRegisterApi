@@ -79,7 +79,7 @@ public class ActivityServiceImpl extends AbstractService implements ActivityServ
 
         ActivityDTO activityToUpdate = getActivity(oldName);
         isSuccess(
-                activityRepository.updateActivityByName(activityToUpdate.getName(), activityToUpdate.getId()),
+                activityRepository.updateActivityName(newName, activityToUpdate.getId()),
                 newName
         );
     }
