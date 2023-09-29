@@ -1,14 +1,14 @@
 package com.myproject.registerApi.validation;
 
-import com.myproject.registerApi.service.ActivityService;
+import com.myproject.registerApi.service.ActivityServiceImpl;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ActivityValidator {
 
-    private final ActivityService activityService;
+    private final ActivityServiceImpl activityService;
 
-    public ActivityValidator(ActivityService activityService) {
+    public ActivityValidator(ActivityServiceImpl activityService) {
         this.activityService = activityService;
     }
 

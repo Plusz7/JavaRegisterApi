@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 
 public abstract class AbstractService {
 
-    Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ActivityService.class);
+    Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ActivityServiceImpl.class);
 
     public void isSuccess(int status, String name) {
         if (status == 0) {
