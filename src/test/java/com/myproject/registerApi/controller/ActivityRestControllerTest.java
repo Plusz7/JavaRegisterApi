@@ -14,6 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.List;
 import java.util.UUID;
 
+import static com.myproject.registerApi.controller.constants.ActivityControllerConstants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -28,13 +29,6 @@ public class ActivityRestControllerTest {
                                 }
                                 """;
 
-    private static final String TEST = "test";
-    private static final String CONTENT_TYPE = "Content-Type";
-    private static final String APPLICATION_JSON = "application/json";
-    private static final String UUID_STRING = "dbe1625c-adca-4c95-af41-7eb4ef8724ef";
-
-    private static final String ACTIVITY_ENDPOINT = "/activity";
-
     @Autowired
     private WebClient webClient;
 
@@ -45,7 +39,7 @@ public class ActivityRestControllerTest {
     private MockWebServer mockWebServer;
 
     @Test
-    public void activityControllerTest() {
+    public void createActivityControllerTest() {
 
         mockWebServer.enqueue(
                 new MockResponse()
@@ -54,16 +48,16 @@ public class ActivityRestControllerTest {
                         .setBody(ACTIVITY_BODY)
         );
 
-        ActivityDTO test = webClient.post()
+        ActivityDTO testActivity = webClient.post()
                 .uri(ACTIVITY_ENDPOINT)
                 .bodyValue(new ActivityDTO().name(TEST))
                 .retrieve()
                 .bodyToFlux(ActivityDTO.class)
                 .blockFirst();
 
-        assertNotNull(test);
-        assertEquals(test.getId(), UUID.fromString(UUID_STRING));
-        assertEquals(test.getName(), TEST);
+        assertNotNull(testActivity);
+        assertEquals(testActivity.getId(), UUID.fromString(ACTVITY_UUID_TEST_STRING));
+        assertEquals(testActivity.getName(), TEST);
     }
 
     @Test
@@ -82,7 +76,7 @@ public class ActivityRestControllerTest {
                 .blockFirst();
 
         assertNotNull(activityDTO);
-        assertEquals(activityDTO.getId(), UUID.fromString(UUID_STRING));
+        assertEquals(activityDTO.getId(), UUID.fromString(ACTVITY_UUID_TEST_STRING));
         assertEquals(activityDTO.getName(), TEST);
     }
 

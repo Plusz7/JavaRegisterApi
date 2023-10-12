@@ -16,8 +16,7 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @AutoConfigureMockMvc
 @DataJpaTest
@@ -60,6 +59,27 @@ public class ChildRepositoryIntegrationTest {
 
         assertThrows(NoSuchElementException.class, fetchedChild::get);
         assertFalse(childRepository.findById(savedChild.getId()).isPresent());
+    }
+
+    @Test
+    public void shouldUpdateChild() {
+        ChildDb oldChild = childRepository.save(childDb);
+
+        int result = childRepository.updateChildInfo(
+                oldChild.getId(),
+                oldChild.getFirstName(),
+                "lastname",
+                oldChild.getAge(),
+                oldChild.getGender(),
+                oldChild.getSocialNumber()
+        );
+
+        ChildDb newChild = childRepository.findById(oldChild.getId())
+                .orElseThrow(() -> new NoSuchElementException("Child Not Found"));
+
+
+        assertThat(result, is(equalTo(1)));
+        assertEquals("lastname", newChild.getLastName());
     }
 
 }
