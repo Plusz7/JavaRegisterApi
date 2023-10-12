@@ -13,7 +13,7 @@ public interface ChildService {
 
     List<ChildDTO> getAllChildren();
 
-    void updateChild(ChildDTO child);
+    void updateChild(String id, ChildDTO child);
 
     void deleteChild(String id);
 }

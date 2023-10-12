@@ -1,6 +1,7 @@
 package com.myproject.registerApi.repository;
 
 import com.myproject.registerApi.model.db.ChildDb;
+import com.myproject.registerApi.model.enums.Gender;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -21,7 +22,7 @@ public interface ChildRepository extends JpaRepository<ChildDb, UUID> {
             @Param("firstName") String firstName,
             @Param("lastName") String lastName,
             @Param("age") Integer age,
-            @Param("gender") String gender,
+            @Param("gender") Gender gender,
             @Param("socialNumber") String socialNumber
     );
 

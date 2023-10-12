@@ -48,6 +48,36 @@ paths:
               schema:
                 $ref: 'teacherSchemas.yml#/components/schemas/TeacherDTO'
   /child:
+    get:
+      summary: Get All child
+      operationId: getAllChild
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'childSchemas.yml#/components/schemas/ChildDTO'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       summary: Save Child
       operationId: saveChild
@@ -136,6 +166,43 @@ paths:
             type: string
       responses:
         201:
+          description: OK
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      summary: Updates child
+      operationId: updateChild
+      parameters:
+        - name: id
+          in: path
+          description: id of child
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'childSchemas.yml#/components/schemas/ChildDTO'
+      responses:
+        200:
           description: OK
         400:
           description: Bad Request

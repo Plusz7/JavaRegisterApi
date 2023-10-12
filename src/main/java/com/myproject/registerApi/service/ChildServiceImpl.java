@@ -80,18 +80,18 @@ public class ChildServiceImpl extends AbstractService implements ChildService {
     }
 
     @Override
-    public void updateChild(ChildDTO childDto) {
+    public void updateChild(String id, ChildDTO childDto) {
         //TODO update yaml, ID is required
 
-        ChildDTO fetchedChild = getChild(childDto.getId());
-        String id = fetchedChild.getId().toString();
+//        ChildDTO fetchedChild = getChild(childDto.getId());
+//        String id = fetchedChild.getId().toString();
 
         int result = childRepository.updateChildInfo(
                 childDto.getId(),
                 childDto.getFirstName(),
                 childDto.getLastName(),
                 childDto.getAge(),
-                childDto.getGender(),
+                Gender.valueOf(childDto.getGender()),
                 childDto.getSocialNumber()
         );
 
