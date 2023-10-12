@@ -29,8 +29,8 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class ActivityServiceTest {
 
-    private ActivityDTO testActivityDTO = new ActivityDTO().name("testActivity");
-    private ActivityDb testActivityDb = new ActivityDb("testActivity");
+    private ActivityDTO testActivityDTO = new ActivityDTO().name("testactivity");
+    private ActivityDb testActivityDb = new ActivityDb("testactivity");
 
     @Autowired
     private ActivityServiceImpl activityService;
@@ -78,15 +78,15 @@ public class ActivityServiceTest {
         //Given
         ActivityDTO fetchedActivityDTO = testActivityDTO;
 
-        when(activityRepository.getByName(any(String.class))).thenReturn(Optional.of(testActivityDb));
+        when(activityRepository.findByName(any(String.class))).thenReturn(Optional.of(testActivityDb));
 
         //When
-        ActivityDTO activity = activityService.getActivity(testActivityDTO.getName());
+        ActivityDTO activity = activityService.getActivityByName(testActivityDTO.getName());
 
         //Then
         assertNotNull(activity);
         assertEquals(fetchedActivityDTO, activity);
-        verify(activityRepository, times(1)).getByName(any(String.class));
+        verify(activityRepository, times(1)).findByName(any(String.class));
     }
 
     @Test
@@ -95,11 +95,11 @@ public class ActivityServiceTest {
         String activityName = testActivityDTO.getName();
 
         //Given When
-        when(activityRepository.getByName(activityName)).thenThrow(NotFoundException.class);
+        when(activityRepository.findByName(activityName)).thenThrow(NotFoundException.class);
 
         //Then
-        assertThrows(NotFoundException.class, () -> activityService.getActivity(activityName));
-        verify(activityRepository, times(1)).getByName(activityName);
+        assertThrows(NotFoundException.class, () -> activityService.getActivityByName(activityName));
+        verify(activityRepository, times(1)).findByName(activityName);
     }
 
     @Test
@@ -122,9 +122,9 @@ public class ActivityServiceTest {
     public void testUpdateActivity() {
         //Given When
         String oldActivityName = testActivityDb.getName();
-        ActivityDTO newActivity = new ActivityDTO().name("newName");
+        ActivityDTO newActivity = new ActivityDTO().name("newname");
         String newActivityName = newActivity.getName();
-        when(activityRepository.getByName(oldActivityName)).thenReturn(Optional.of(testActivityDb));
+        when(activityRepository.findByName(oldActivityName)).thenReturn(Optional.of(testActivityDb));
         when(activityRepository.updateActivityName(newActivityName, testActivityDTO.getId())).thenReturn(1);
 
         //Then
@@ -145,14 +145,14 @@ public class ActivityServiceTest {
     public void testThrowFailedToExecuteExceptionOnUpdateActivity() {
         //Given
         String oldActivityName = testActivityDb.getName();
-        ActivityDTO newActivity = new ActivityDTO().name("newName");
+        ActivityDTO newActivity = new ActivityDTO().name("newname");
         String newActivityName = newActivity.getName();
-        when(activityRepository.getByName(oldActivityName)).thenReturn(Optional.of(testActivityDb));
+        when(activityRepository.findByName(oldActivityName)).thenReturn(Optional.of(testActivityDb));
         when(activityRepository.updateActivityName(newActivityName, testActivityDTO.getId())).thenReturn(0);
 
         //When Then
         assertThrows(FailedToExecuteException.class, () -> activityService.updateActivity(oldActivityName, newActivityName));
-        verify(activityRepository, times(1)).getByName(oldActivityName);
+        verify(activityRepository, times(1)).findByName(oldActivityName);
         verify(activityRepository, times(1)).updateActivityName(newActivityName, testActivityDTO.getId());
     }
 

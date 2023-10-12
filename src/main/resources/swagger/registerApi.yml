@@ -124,12 +124,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    delete:
+      summary: Deletes child by id
+      operationId: deleteChildById
+      parameters:
+        - name: id
+          in: path
+          description: id of child
+          required: true
+          schema:
+            type: string
+      responses:
+        201:
+          description: OK
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 
   /activity:
     post:
       summary: Save Activity
       operationId: saveActivity
       requestBody:
+        required: true
         content:
           application/json:
             schema:

@@ -104,6 +104,7 @@
                         <configuration>
                             <configHelp>false</configHelp>
                             <configOptions>
+<!--                                <reactive>true</reactive>-->
                                 <useSpringBoot3>true</useSpringBoot3>
                                 <delegatePattern>true</delegatePattern>
                                 <serializableModel>true</serializableModel>

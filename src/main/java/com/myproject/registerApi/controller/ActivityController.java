@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 public class ActivityController implements ActivityApi {
 
-    private  final ActivityService activityService;
+    private final ActivityService activityService;
 
     public ActivityController(ActivityService activityService) {
         this.activityService = activityService;
@@ -28,7 +28,7 @@ public class ActivityController implements ActivityApi {
     public ResponseEntity<ActivityDTO> getActivityByName(String name) {
         return ResponseEntity
                 .ok()
-                .body(activityService.getActivity(name));
+                .body(activityService.getActivityByName(name));
     }
 
     @Override

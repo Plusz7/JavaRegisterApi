@@ -70,7 +70,7 @@ public class ActivityRepositoryIntegrationTest {
         logger.info("Deletion result: {}", result);
 
         // Step 5: Attempt to retrieve the deleted activity (should not exist)
-        Optional<ActivityDb> fetchedActivity = activityRepository.getByName(TEST_ACTIVITY_NAME);
+        Optional<ActivityDb> fetchedActivity = activityRepository.findByName(TEST_ACTIVITY_NAME);
 
         // Step 6: Log the attempt to retrieve the deleted activity for debugging
         if (fetchedActivity.isPresent()) {

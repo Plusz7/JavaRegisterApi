@@ -8,6 +8,7 @@ components:
         - lastName
         - age
         - gender
+        - socialNumber
       properties:
         id:
           type: string
@@ -20,6 +21,8 @@ components:
         age:
           type: integer
         gender:
+          type: string
+        socialNumber:
           type: string
         activities:
           type: array

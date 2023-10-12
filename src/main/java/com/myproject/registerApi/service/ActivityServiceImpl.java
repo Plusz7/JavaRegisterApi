@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ActivityServiceImpl extends AbstractService implements ActivityService {
@@ -22,7 +23,7 @@ public class ActivityServiceImpl extends AbstractService implements ActivityServ
 
     public ActivityDTO saveActivity(ActivityDTO activityDTO) {
 
-        ActivityDb activityDb = new ActivityDb(activityDTO.getName());
+        ActivityDb activityDb = new ActivityDb(activityDTO.getName().toLowerCase());
         try {
 
             LOGGER.info("Saving activity: " + activityDb.getName());
@@ -42,11 +43,12 @@ public class ActivityServiceImpl extends AbstractService implements ActivityServ
                 );
     }
 
-    public ActivityDTO getActivity(String name) {
+    public ActivityDTO getActivityByName(String name) {
+        String validName = name.toLowerCase();
 
-        LOGGER.info("Getting activity: " + name);
-        Optional<ActivityDb> optionalActivityDb = activityRepository.getByName(name);
-        optionalActivityDb.orElseThrow(() -> new NotFoundException("Activity not found: " + name));
+        LOGGER.info("Getting activity: " + validName);
+        Optional<ActivityDb> optionalActivityDb = activityRepository.findByName(validName.toLowerCase());
+        optionalActivityDb.orElseThrow(() -> new NotFoundException("Activity not found: " + validName));
 
         ActivityDb activityDb = optionalActivityDb.get();
         LOGGER.info("Activity found: " + activityDb.getName());
@@ -69,27 +71,31 @@ public class ActivityServiceImpl extends AbstractService implements ActivityServ
 
     public void updateActivity(String oldName, String newName) {
 
+        String validOldName = oldName.toLowerCase();
+        String validNewName = newName.toLowerCase();
+
         LOGGER.info("Validating names for activity.");
 
-        if (newName.equals(oldName)) {
-            throw new AlreadyExistsException(newName);
+        if (validNewName.equals(validOldName)) {
+            throw new AlreadyExistsException(validNewName);
         }
         LOGGER.info("Validation successful.");
-        LOGGER.info("Updating activity: " + oldName + " -> " + newName);
+        LOGGER.info("Updating activity: " + validOldName + " -> " + validNewName);
 
-        ActivityDTO activityToUpdate = getActivity(oldName);
+        ActivityDTO activityToUpdate = getActivityByName(validOldName);
         isSuccess(
-                activityRepository.updateActivityName(newName, activityToUpdate.getId()),
-                newName
+                activityRepository.updateActivityName(validNewName, activityToUpdate.getId()),
+                validNewName
         );
     }
 
     public void deleteActivity(String name) {
-        LOGGER.info("Deleting activity: " + name);
+        String validName = name.toLowerCase();
+        LOGGER.info("Deleting activity: " + validName);
         isSuccess(
-                activityRepository.deleteByName(name),
-                name
+                activityRepository.deleteByName(validName),
+                validName
         );
-        LOGGER.info("Activity deleted: " + name);
+        LOGGER.info("Activity deleted: " + validName);
     }
 }
