@@ -53,8 +53,8 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public void deleteTeacher(String id) {
-        teacherRepository.deleteById(UUID.fromString(id));
+    public void deleteTeacher(UUID id) {
+        teacherRepository.deleteById(id);
     }
 
     private TeacherDTO convertToDTO(TeacherDb teacherDb) {

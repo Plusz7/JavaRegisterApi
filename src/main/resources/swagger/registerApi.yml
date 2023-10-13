@@ -99,6 +99,7 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
       responses:
         201:
           description: OK
