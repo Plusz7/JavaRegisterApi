@@ -86,7 +86,7 @@ public class ActivityRestControllerTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setHeader(CONTENT_TYPE, APPLICATION_JSON)
-                        .setBody("[" + ACTIVITY_BODY + "]")
+                        .setBody("[" + ACTIVITY_BODY + "," + ACTIVITY_BODY + "]")
         );
 
         List<ActivityDTO> list = webClient.get()
@@ -98,7 +98,7 @@ public class ActivityRestControllerTest {
                 .block();
 
         assertNotNull(list);
-        assertEquals(list.size(), 1);
+        assertEquals(list.size(), 2);
     }
         //TODO
     @Test

@@ -9,9 +9,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import static com.myproject.registerApi.controller.constants.ChildControllerConstants.*;
@@ -105,6 +107,26 @@ public class ChildRestControllerTest {
         assertEquals(childDto.getFirstName(), CHILD_FIRST_NAME_STRING);
     }
 
+    @Test
+    public void getAllChild() {
+        mockWebServer.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setHeader(CONTENT_TYPE, APPLICATION_JSON)
+                        .setBody("[" + CHILD_BODY + "," + CHILD_BODY +"]")
+        );
+
+        List<ChildDTO> childDTOList = webClient.get()
+                .uri(CHILD_ENDPOINT)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(ChildDTO.class)
+                .collectList()
+                .block();
+
+        assertNotNull(childDTOList);
+        assertEquals(childDTOList.size(), 2);
+    }
 
 
 }
