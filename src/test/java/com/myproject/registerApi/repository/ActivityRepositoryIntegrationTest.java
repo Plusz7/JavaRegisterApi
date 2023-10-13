@@ -5,8 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,17 +22,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @AutoConfigureMockMvc //TODO maybe delete ?
-@DataJpaTest
-@TestPropertySource(locations = "classpath:application-test.properties")
+@AutoConfigureDataJpa
 @ActiveProfiles("test")
+@SpringBootTest
 public class ActivityRepositoryIntegrationTest {
 
     private static final String TEST_ACTIVITY_NAME = "test";
 
     private static final Logger logger = LoggerFactory.getLogger(ActivityRepositoryIntegrationTest.class);
 
+    private final ActivityRepository activityRepository;
+
     @Autowired
-    private ActivityRepository activityRepository;
+    public ActivityRepositoryIntegrationTest(ActivityRepository activityRepository) {
+        this.activityRepository = activityRepository;
+    }
 
     @Test
     @Transactional
@@ -70,7 +75,7 @@ public class ActivityRepositoryIntegrationTest {
         logger.info("Deletion result: {}", result);
 
         // Step 5: Attempt to retrieve the deleted activity (should not exist)
-        Optional<ActivityDb> fetchedActivity = activityRepository.getByName(TEST_ACTIVITY_NAME);
+        Optional<ActivityDb> fetchedActivity = activityRepository.findByName(TEST_ACTIVITY_NAME);
 
         // Step 6: Log the attempt to retrieve the deleted activity for debugging
         if (fetchedActivity.isPresent()) {
