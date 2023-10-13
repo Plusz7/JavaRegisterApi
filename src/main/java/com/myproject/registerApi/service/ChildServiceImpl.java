@@ -51,17 +51,7 @@ public class ChildServiceImpl extends AbstractService implements ChildService {
             throw new RuntimeException(e);
         }
 
-        List<ActivityDTO> convertedListDto = convertActivityListDbToDto(childDb);
-
-        return new ChildDTO()
-                .id(childDb.getId())
-                .firstName(childDb.getFirstName())
-                .lastName(childDb.getLastName())
-                .age(childDb.getAge())
-                .gender(childDb.getGender().name())
-                .socialNumber(childDb.getSocialNumber())
-                .activities(convertedListDto)
-                ;
+        return childDb.conversionToDto();
     }
 
     @Override
@@ -69,13 +59,13 @@ public class ChildServiceImpl extends AbstractService implements ChildService {
         ChildDb child = childRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Child not found id: " + id));
 
-        return conversionChildDbToDto(child);
+        return child.conversionToDto();
     }
 
     @Override
     public List<ChildDTO> getAllChildren() {
         return childRepository.findAll().stream()
-                .map(ChildServiceImpl::conversionChildDbToDto)
+                .map(ChildDb::conversionToDto)
                 .collect(Collectors.toList());
     }
 
@@ -100,37 +90,34 @@ public class ChildServiceImpl extends AbstractService implements ChildService {
 
     @Override
     public void deleteChild(String id) {
-        UUID uuid = UUID.fromString(id);
-//        isSuccess(childRepository.deleteById(uuid), id);
-        childRepository.deleteById(uuid);
+        childRepository.deleteById(UUID.fromString(id));
     }
 
     private static Gender getGender(ChildDTO child) {
-        return Optional.of(
-                        Gender.valueOf(child.getGender().toUpperCase()))
+        return Optional.of(Gender.valueOf(child.getGender().toUpperCase()))
                 .orElseThrow(IllegalArgumentException::new);
     }
 
-    private static ChildDTO conversionChildDbToDto(ChildDb childDb) {
-        return new ChildDTO()
-                .id(childDb.getId())
-                .firstName(childDb.getFirstName())
-                .lastName(childDb.getLastName())
-                .age(childDb.getAge())
-                .gender(childDb.getGender().name())
-                .socialNumber(childDb.getSocialNumber())
-                .activities(convertActivityListDbToDto(childDb));
-    }
-
-    private static List<ActivityDTO> convertActivityListDbToDto(ChildDb childDb) {
-        return childDb.getActivities().stream()
-                .map((activityDb ->
-                        new ActivityDTO()
-                                .id(activityDb.getId())
-                                .name(activityDb.getName())
-                ))
-                .toList();
-    }
+//    private static ChildDTO conversionChildDbToDto(ChildDb childDb) {
+//        return new ChildDTO()
+//                .id(childDb.getId())
+//                .firstName(childDb.getFirstName())
+//                .lastName(childDb.getLastName())
+//                .age(childDb.getAge())
+//                .gender(childDb.getGender().name())
+//                .socialNumber(childDb.getSocialNumber())
+//                .activities(convertActivityListDbToDto(childDb));
+//    }
+//
+//    private static List<ActivityDTO> convertActivityListDbToDto(ChildDb childDb) {
+//        return childDb.getActivities().stream()
+//                .map((activityDb ->
+//                        new ActivityDTO()
+//                                .id(activityDb.getId())
+//                                .name(activityDb.getName())
+//                ))
+//                .toList();
+//    }
 
     private List<ActivityDb> convertActivityListDtoToDb(ChildDTO childDto) {
         return childDto.getActivities().stream()
