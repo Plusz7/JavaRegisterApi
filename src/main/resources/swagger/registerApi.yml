@@ -13,7 +13,7 @@ paths:
 
   /teacher:
     post:
-      summary: Save Teacher
+      summary: Save Teacher if Id is not provided it will create Teacher, if it is it will update the record in database
       operationId: saveTeacher
       requestBody:
         content:
@@ -27,6 +27,30 @@ paths:
             application/json:
               schema:
                 $ref: 'teacherSchemas.yml#/components/schemas/TeacherDTO'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A description of the validation error(s) or bad input data.
+                example:
+                  message: "Validation failed: Name must be at least 3 characters long."
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A description of the server error.
+                example:
+                  message: "Internal server error occurred."
 
   /teacher/{id}:
     get:
@@ -35,7 +59,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Unique Id of an User
+          description: Unique Id of an Teacher
           required: true
           schema:
             type: string
@@ -47,6 +71,56 @@ paths:
             application/json:
               schema:
                 $ref: 'teacherSchemas.yml#/components/schemas/TeacherDTO'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Deletes teacher by id
+      operationId: deleteTeacherById
+      parameters:
+        - name: id
+          in: path
+          description: id of teacher
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        201:
+          description: OK
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /child:
     get:
       summary: Get All child

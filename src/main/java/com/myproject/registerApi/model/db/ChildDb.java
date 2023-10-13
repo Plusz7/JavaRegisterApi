@@ -1,5 +1,7 @@
 package com.myproject.registerApi.model.db;
 
+import com.myproject.registerApi.model.ActivityDTO;
+import com.myproject.registerApi.model.ChildDTO;
 import com.myproject.registerApi.model.enums.Gender;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -54,6 +56,16 @@ public class ChildDb {
     public ChildDb() {
     }
 
+    public ChildDb(UUID id, String firstName, String lastName, Integer age, Gender gender, String socialNumber, List<ActivityDb> list) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.gender = gender;
+        this.socialNumber = socialNumber;
+        this.listOfActivities = list;
+    }
+
     public ChildDb(String firstName, String lastName, Integer age, Gender gender, String socialNumber, List<ActivityDb> list) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -89,5 +101,36 @@ public class ChildDb {
 
     public List<ActivityDb> getActivities() {
         return listOfActivities;
+    }
+
+    public ChildDTO conversionToDtoNoId() {
+        return new ChildDTO()
+                .firstName(this.getFirstName())
+                .lastName(this.getLastName())
+                .age(this.getAge())
+                .gender(this.getGender().name())
+                .socialNumber(this.getSocialNumber())
+                .activities(convertActivityListDbToDto());
+    }
+
+    public ChildDTO conversionToDto() {
+        return new ChildDTO()
+                .id(this.getId())
+                .firstName(this.getFirstName())
+                .lastName(this.getLastName())
+                .age(this.getAge())
+                .gender(this.getGender().name())
+                .socialNumber(this.getSocialNumber())
+                .activities(convertActivityListDbToDto());
+    }
+
+    public List<ActivityDTO> convertActivityListDbToDto() {
+        return this.getActivities().stream()
+                .map((activityDb ->
+                        new ActivityDTO()
+                                .id(activityDb.getId())
+                                .name(activityDb.getName())
+                ))
+                .toList();
     }
 }

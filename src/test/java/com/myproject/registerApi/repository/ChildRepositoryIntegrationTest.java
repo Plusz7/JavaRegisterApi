@@ -2,39 +2,39 @@ package com.myproject.registerApi.repository;
 
 import com.myproject.registerApi.model.db.ChildDb;
 import com.myproject.registerApi.model.enums.Gender;
+import com.myproject.registerApi.utilities.ActivityTestObjects;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.UUID;
 
+import static com.myproject.registerApi.utilities.ChildTestObjects.childDb;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
 @AutoConfigureMockMvc
-@DataJpaTest
-@TestPropertySource(locations = "classpath:application-test.properties")
+@AutoConfigureDataJpa
 @ActiveProfiles("test")
+@SpringBootTest
 public class ChildRepositoryIntegrationTest {
-
-    private static final ChildDb childDb = new ChildDb(
-            "firstname",
-            "lastname",
-            5,
-            Gender.MALE,
-            "12342143",
-            null
-    );
 
     @Autowired
     private ChildRepository childRepository;
+
+    @Autowired
+    private ActivityRepository activityRepository;
 
     @Test
     @Transactional
@@ -51,6 +51,9 @@ public class ChildRepositoryIntegrationTest {
     @Test
     public void shouldDeleteChild() {
 
+        activityRepository.save(ActivityTestObjects.testActivity1);
+        activityRepository.save(ActivityTestObjects.testActivity2);
+
         ChildDb savedChild = childRepository.save(childDb);
 
         childRepository.deleteById(savedChild.getId());
@@ -63,6 +66,10 @@ public class ChildRepositoryIntegrationTest {
 
     @Test
     public void shouldUpdateChild() {
+
+        activityRepository.save(ActivityTestObjects.testActivity1);
+        activityRepository.save(ActivityTestObjects.testActivity2);
+
         ChildDb oldChild = childRepository.save(childDb);
 
         int result = childRepository.updateChildInfo(
