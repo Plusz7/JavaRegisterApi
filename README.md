@@ -7,5 +7,6 @@ Unit test for controllers are using test configurated WebClient and Webflux.
 Unit test for services are using Junit/Mockito
 Integration tests for JPA repository with their own distinct h2 Db configuration.
 
-Only Activity, Child with @ManyToMany on List<ActivityDb> property have been developed so far.
+- Implemented Activity, Child with @ManyToMany on List<ActivityDb> property
+- Implemented Spring Security for a Teacher
 
