@@ -10,7 +10,6 @@ servers:
     description: Local server
 
 paths:
-
   /teacher:
     post:
       summary: Save Teacher if Id is not provided it will create Teacher, if it is it will update the record in database
