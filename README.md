@@ -8,5 +8,6 @@ Unit test for services are using Junit/Mockito
 Integration tests for JPA repository with their own distinct h2 Db configuration.
 
 - Implemented Activity, Child with @ManyToMany on List<ActivityDb> property
-- Implemented Spring Security for a Teacher
+- Implemented Spring Security for a Teacher with JWT token
+- Implemented dockerized MySql database
 
